@@ -53,19 +53,46 @@ void read_from_file(char *&a,char*&b,int &digits_a,int &digits_b,char &oper)
 	delete[]operator_buffer;
 	}
 }
-void read_from_stdin(char *&a, char* &b, int &digits_a, int &digits_b,char &oper)
+bool read_from_stdin(char *&a, char* &b, int &digits_a, int &digits_b,char &oper)
 {
 	string a_, b_;
 	cin >>oper;
 	cin >> a_;
 	cin >> b_;
 	digits_a = a_.length();
-//	cout << digits_a << endl;
 	digits_b = b_.length();
 	a = new char[digits_a];
 	b = new char[digits_b];
 	a_.copy(a, digits_a, 0);
 	b_.copy(b, digits_b, 0);
+	int check_digit = 0;
+	//check inputs
+	//start digit cannot be 0
+	if (a[0] - '0' == 0 || b[0] - '0' == 0)
+	{
+		printf("the first digit cannot be 0!\n");
+		return false;
+	}
+	//every digit should be 0~9
+	for (int i = 0; i < digits_a; ++i)
+	{
+		check_digit = a[i] - '0';
+		if (check_digit<0 || check_digit>9)
+		{
+			printf("input should only contain 0~9!\n");
+			return false;
+		}
+	}
+	for (int i = 0; i < digits_b; ++i)
+	{
+		check_digit = b[i] - '0';
+		if (check_digit<0 || check_digit>9)
+		{
+			printf("input should only contain 0~9!\n");
+			return false;
+		}
+	}
+	return true;
 }
 int main()
 {
@@ -86,20 +113,20 @@ int main()
 	char *b;
 	int digits_a;
 	int digits_b;
-	read_from_stdin(a,b,digits_a,digits_b,operator_);
-
+	if (false == read_from_stdin(a, b, digits_a, digits_b, operator_))
+	{
+		return 0;
+	}
 	////read from file data.txt
 	//read_from_file(a,b,digits_a,digits_b,operator_);
-
-
 	BigInteger Ba = BigInteger(a, digits_a);
 	BigInteger Bb = BigInteger(b, digits_b);
 	BigInteger Bc;
 	BigInteger remainder;
-	DWORD t1, t2;
+	//DWORD t1, t2;
 	//Ba.Print_result();
 	//Bb.Print_result();
-	t1 = timeGetTime();
+//	t1 = timeGetTime();
 	switch (operator_)
 	{
 		case '+':
@@ -145,10 +172,7 @@ int main()
 	}
 	/*t2 = timeGetTime();
 	cout << endl <<"time:"<< (t2 - t1)*1.0 <<"ms"<< endl;*/
-//	Ba.Clear();
 	Bb.Clear();
-	//Bc.Clear();
-	//_CrtDumpMemoryLeaks();
 	return 0;
 
 

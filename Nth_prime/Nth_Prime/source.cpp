@@ -41,17 +41,25 @@ int main()
 	int N;
 	printf("input N: ");
 	cin >> N;
-	int prime_max = N*log(N) + N*log(log(N));
-	//int prime_max = 2038074743 + 1;
-	int prime_id_max = 100000000;
-	int *prime = new int[prime_id_max];
-	bool *is_prime=new bool[prime_max];
-	//DWORD t1, t2;
-	//t1 = timeGetTime();
-	printf("the %dth prime is %d\n", N, Get_Nth_Prime(N, prime, is_prime, prime_max));
-	//t2 = timeGetTime();
-	//printf("time:%d\n", (t2 - t1) * 1);
-	delete[]prime; prime = NULL;
-	delete[]is_prime; is_prime = NULL;
-	return 0;
+	if (N<1 || N>100000000)
+	{
+		printf("wrong N,not in the range!\n");
+		return 0;
+	}
+	else
+	{
+		int prime_max = N*log(N) + N*log(log(N));
+		if (N < 6)prime_max = 11;
+		int prime_id_max = 100000000;
+		int *prime = new int[prime_id_max];
+		bool *is_prime = new bool[prime_max];
+		//DWORD t1, t2;
+		//t1 = timeGetTime();
+		printf("%d\n",  Get_Nth_Prime(N, prime, is_prime, prime_max));
+		//t2 = timeGetTime();
+		//printf("time:%d\n", (t2 - t1) * 1);
+		delete[]prime; prime = NULL;
+		delete[]is_prime; is_prime = NULL;
+		return 0;
+	}
 }
